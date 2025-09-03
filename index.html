@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="hy">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Արտյոմ և Մարիամ — Հարսանիք</title>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+  body{margin:0;font-family:"Inter",sans-serif;background:#fffaf7;color:#332b27;line-height:1.6;text-align:center}
+  header{min-height:80vh;display:flex;justify-content:center;align-items:center;background:#fff}
+  .hero{padding:40px;background:#fff;border-radius:20px;max-width:720px;box-shadow:0 8px 20px rgba(0,0,0,.1)}
+  .names{font-family:"Cormorant Garamond",serif;font-size:48px;font-weight:700}
+  .amp{color:#c8a97e}
+  .date{margin-top:10px;font-weight:600;color:#6e5d56}
+  .countdown{display:flex;justify-content:center;gap:12px;margin:20px 0;flex-wrap:wrap}
+  .timer{min-width:80px;padding:10px;border-radius:12px;background:#fff;border:1px solid #eadfda}
+  .timer b{font-size:24px;display:block}
+  .timer span{font-size:12px;color:#6e5d56}
+  .btn{display:inline-block;background:linear-gradient(180deg,#c8a97e,#b58a64);color:#fff;padding:12px 20px;border-radius:30px;text-decoration:none;font-weight:600;margin-top:10px}
+  .btn.ghost{background:#fff;color:#332b27;border:1px solid #eadfda}
+  section{padding:50px 20px}
+  h2{font-family:"Cormorant Garamond",serif;font-size:32px;margin-bottom:10px}
+  .card{background:#fff;border:1px solid #eadfda;border-radius:16px;box-shadow:0 6px 16px rgba(0,0,0,.06);padding:24px;margin:20px auto;max-width:600px}
+  footer{padding:20px;background:#fff;border-top:1px solid #eadfda;color:#6e5d56}
+</style>
+</head>
+<body>
+<script>
+document.getElementById('detailsBtn').addEventListener('click', function(e){
+	e.preventDefault();
+	document.getElemetById('details').scrollIntoWiew({behavior: 'smooth'});
+});
+</script>
+
+<header>
+  <div class="hero">
+    <div class="names">Արտյոմ <span class="amp">&amp;</span> Մարիամ</div>
+    <div class="date">25 Նոյեմբերի, 2025 • Երևան</div>
+
+    <div class="countdown">
+      <div class="timer"><b id="d">–</b><span>Օր</span></div>
+      <div class="timer"><b id="h">–</b><span>Ժամ</span></div>
+      <div class="timer"><b id="m">–</b><span>Րոպե</span></div>
+      <div class="timer"><b id="s">–</b><span>Վայրկյան</span></div>
+    </div>
+
+    <a href="#details" id="detailsBtn" class="btn">Տեսնել Մանրամասները</a>
+  </div>
+</header>
+
+<section id="message">
+  <h2>Հաղորդագրություն</h2>
+	<div class="card">
+	<p>
+	Ողջույն իմ բարեկամ.
+	Դուք հրավիրվում եք մասնակիցը լինելու մեր հարսանյաց հանդեսին:
+	</p>
+
+  <id="details">
+  <h2>Վայր և ժամ</h2>
+
+  <div class="card">
+    <h3>Պսակադրություն</h3>
+    <p><strong>Սուրբ Սարգիս</strong></p>
+    <p>Սկիզբ՝ 14:30</p>
+    <p><a href="https://maps.google.com/?q=Սուրբ Սարգսի Եկեղեցի, Երևան" target="_blank" class="btn ghost">Տեսնել Քարտեզում</a></p>
+  </div>
+
+  <div class="card">
+    <h3>Խնջույք</h3>
+    <p><strong>Կոնտինենտալ</strong></p>
+    <p>Սկիզբ՝ 17:30</p>
+    <p><a href="https://maps.google.com/?q=Կոնտինենտալ, Երևան" target="_blank" class="btn ghost">Տեսնել Քարտեզում</a></p>
+  </div>
+</section>
+
+<footer>
+  <p>© <span id="year"></span> Արտյոմ & Մարիամ • Սիրով՝ Երևանից</p>
+</footer>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  // Auto year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // === ROBUST COUNTDOWN (fixed to Armenia UTC+4, no fragile parsing) ===
+  // Edit these if you need to change the date/time:
+  const YEAR = 2025, MONTH = 11, DAY = 25;      // MONTH is 1–12 (11 = Նոյեմբեր)
+  const HOUR_LOCAL = 14, MINUTE = 30;          // 14:30 local Armenia time
+  const ARMENIA_TZ = 4;                        // UTC+4
+
+  // Convert Armenia local time to a UTC timestamp so all browsers show the same countdown
+  const targetUTCms = Date.UTC(YEAR, MONTH-1, DAY, HOUR_LOCAL - ARMENIA_TZ, MINUTE, 0, 0);
+
+  function tick(){
+    let diff = targetUTCms - Date.now();
+    if (diff < 0) diff = 0;
+
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor(diff / 3600000) % 24;
+    const m = Math.floor(diff / 60000) % 60;
+    const s = Math.floor(diff / 1000) % 60;
+
+    document.getElementById('d').textContent = d;
+    document.getElementById('h').textContent = String(h).padStart(2,'0');
+    document.getElementById('m').textContent = String(m).padStart(2,'0');
+    document.getElementById('s').textContent = String(s).padStart(2,'0');
+  }
+tick();                    // draw immediately
+  setInterval(tick, 1000);   // then update every second
+});
+</script>
+
+</body>
+</html>
